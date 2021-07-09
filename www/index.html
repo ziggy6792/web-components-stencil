@@ -13,7 +13,16 @@
     .side-nav a {
       text-decoration: none;
       color: black;
-    }</style> <script type="module" src="/build/web-components-stencil.esm.js" data-stencil></script> <script nomodule="" src="/build/web-components-stencil.js" data-stencil></script> </head> <body> <uc-side-drawer title="Main Menu"> <nav class="side-nav"> <ul> <li><a href="/">A Link</a></li> <li><a href="/">Another Link</a></li> <li><a href="/">A third Link</a></li> </ul> </nav> </uc-side-drawer> <script>
+    }</style> <script type="module" src="/build/web-components-stencil.esm.js" data-stencil></script> <script nomodule="" src="/build/web-components-stencil.js" data-stencil></script> </head> <body> <button id="side-drawer-btn">Open Side Menu</button> <uc-side-drawer title="Main Menu"> <nav class="side-nav"> <ul> <li><a href="/">A Link</a></li> <li><a href="/">Another Link</a></li> <li><a href="/">A third Link</a></li> </ul> </nav> </uc-side-drawer> <script>
+    const sideDrawerButton = document.querySelector('#side-drawer-btn')
+    const sideDrawer = document.querySelector('uc-side-drawer')
+    sideDrawerButton.addEventListener('click', () => {
+      if (!sideDrawer.open) {
+        sideDrawer.open = true
+      }
+    })
+
+  </script> <script>
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   // auto-unregister service worker during dev mode
   navigator.serviceWorker.getRegistration().then(function(registration) {
