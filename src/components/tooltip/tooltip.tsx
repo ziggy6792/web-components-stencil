@@ -1,4 +1,4 @@
-import { Component, Prop, h, Method, Fragment } from '@stencil/core';
+import { Component, Prop, h, Method, Fragment, State } from '@stencil/core';
 
 @Component({
   tag: 'uc-tooltip',
@@ -6,14 +6,23 @@ import { Component, Prop, h, Method, Fragment } from '@stencil/core';
   shadow: true,
 })
 export class Tooltip {
-  @Prop({ reflect: true }) textContent: string;
+  @Prop({ reflect: true }) text: string;
 
-  @Prop({ reflect: true }) isTooltipVisible: string;
+  @State()
+  isTooltipVisible: boolean;
+
+  toggle() {
+    this.isTooltipVisible = !this.isTooltipVisible;
+  }
 
   render() {
     return (
       <Fragment>
-        <slot>Some default</slot>, <span class='icon'>?</span>
+        <slot>Some default</slot>
+        <span class='icon' onClick={() => this.toggle()}>
+          ?
+        </span>
+        {this.isTooltipVisible && <div>{this.text}</div>}
       </Fragment>
     );
   }
