@@ -1,89 +1,41 @@
-aside {
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 30rem;
-  max-width: 80%;
-  height: 100vh;
-  background: #f3f3f3;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  transition: left 0.3s ease-out;
-  z-index: 100;
+div {
+  font-weight: normal;
+  background-color: black;
+  color: white;
+  position: absolute;
+  top: 1.5rem;
+  left: 0.75rem;
+  z-index: 10;
+  padding: 0.15rem;
+  border-radius: 3px;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.26);
 }
 
-:host([opened]) aside {
-  left: 0;
-}
-
-header {
-  padding: 1rem;
-  background: black;
+:host {
   position: relative;
 }
 
-header h1 {
-  font-size: 1.5rem;
-  color: white;
-  margin: 0;
+:host(.important) {
+  background: var(--color-primary, #ccc);
+  padding: 0.15rem;
 }
 
-header button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 1rem;
-  color: white;
-  background: transparent;
-  font-size: 1.5rem;
-  border: none;
+:host-context(p) {
+  font-weight: bold;
 }
 
-header button:focus {
-  outline: none;
+.highlight {
+  background-color: red;
 }
 
-#tabs {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 1rem 0;
+::slotted(.highlight) {
+  border-bottom: 1px dotted red;
 }
 
-#tabs button {
-  width: 30%;
-  background: white;
-  color: black;
-  text-align: center;
-  border: 1px solid black;
-  font: inherit;
-  padding: 0.15rem 0;
-}
-
-#tabs button.active,
-#tabs button:active,
-#tabs button:hover {
+.icon {
   background: black;
   color: white;
-}
-
-#tabs button:focus {
-  outline: none;
-}
-
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.75);
-  z-index: 10;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease-out;
-}
-
-:host([opened]) .backdrop {
-  opacity: 1;
-  pointer-events: all;
+  padding: 0.15rem 0.5rem;
+  text-align: center;
+  border-radius: 50%;
 }

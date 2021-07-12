@@ -1,4 +1,4 @@
-import { Component, Prop, h, Method } from '@stencil/core';
+import { Component, Prop, h, Method, Fragment } from '@stencil/core';
 
 @Component({
   tag: 'uc-tooltip',
@@ -12,10 +12,9 @@ export class Tooltip {
 
   render() {
     return (
-      <div>
-        <div>{JSON.stringify(this.isTooltipVisible)}</div>
-        <slot />
-      </div>
+      <Fragment>
+        <slot>Some default</slot>, <span class='icon'>?</span>
+      </Fragment>
     );
   }
 }
