@@ -1,4 +1,4 @@
-import { Component, Fragment, h } from '@stencil/core';
+import { Component, h } from '@stencil/core';
 
 @Component({
   tag: 'uc-stock-price',
@@ -8,20 +8,18 @@ import { Component, Fragment, h } from '@stencil/core';
 export class StockPrice {
   onFetchStockPrice(event: Event) {
     event.preventDefault();
-    console.log('submitted');
+    console.log('Submitted!');
   }
 
   render() {
-    return (
-      <Fragment>
-        <form onSubmit={(event) => this.onFetchStockPrice(event)}>
-          <input id='stock-symbol' />
-          <button type='submit'>Fetch</button>
-        </form>
-        <div>
-          <p>Price: {0}</p>
-        </div>
-      </Fragment>
-    );
+    return [
+      <form onSubmit={this.onFetchStockPrice}>
+        <input id='stock-symbol' />
+        <button type='submit'>Fetch</button>
+      </form>,
+      <div>
+        <p>Price: {0}</p>
+      </div>,
+    ];
   }
 }
