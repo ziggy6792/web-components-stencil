@@ -13,6 +13,8 @@ export class StockPrice {
 
   @State() stockInputValid = false;
 
+  @State() error: string = null;
+
   stockInput: HTMLInputElement;
 
   onFetchStockPrice(event: Event) {
@@ -23,11 +25,16 @@ export class StockPrice {
         return res.json();
       })
       .then((parsedRes) => {
-        this.fetchedPrice = +parsedRes['Global Quote']['05. price'];
-        console.log(this.fetchedPrice);
+        const recPrice = parsedRes['Global Quote']['05. price'];
+        if (!recPrice) {
+          throw new Error('Invalid');
+        }
+        this.fetchedPrice = +recPrice;
+        this.error = null;
       })
       .catch((err) => {
         console.log(err);
+        this.error = err.message;
       });
   }
 
@@ -48,7 +55,9 @@ export class StockPrice {
         </button>
       </form>,
       <div>
-        <p>Price: ${this.fetchedPrice}</p>
+        {this.error && <div>{this.error}</div>}
+        {!this.error && this.fetchedPrice && <p>Price: ${this.fetchedPrice}</p>}
+        {!this.error && !this.fetchedPrice && <p>Please enter ticker</p>}
       </div>,
     ];
   }
