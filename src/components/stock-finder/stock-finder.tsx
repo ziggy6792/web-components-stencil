@@ -14,7 +14,10 @@ export class StockFinder {
 
   @Event({ bubbles: true, composed: true }) ucSymbolSelected: EventEmitter<string>;
 
+  @State() loading = false;
+
   onFindStocks(event: Event) {
+    this.loading = true;
     event.preventDefault();
     const stockName = this.stockNameInput.value;
     fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${stockName}&apikey=${AV_API_KEY}`)
@@ -24,9 +27,11 @@ export class StockFinder {
           return { name: match['2. name'], symbol: match['1. symbol'] };
         });
         console.log(this.searchResults);
+        this.loading = false;
       })
       .catch((err) => {
         console.log(err);
+        this.loading = false;
       });
   }
 
@@ -41,13 +46,16 @@ export class StockFinder {
           <input id='stock-symbol' ref={(el) => (this.stockNameInput = el)} />
           <button type='submit'>Find!</button>
         </form>
-        <ul>
-          {this.searchResults.map((result) => (
-            <li onClick={() => this.onSelectSymbol(result.symbol)}>
-              <strong>{result.symbol}</strong> - {result.name}
-            </li>
-          ))}
-        </ul>
+        {!this.loading && (
+          <ul>
+            {this.searchResults.map((result) => (
+              <li onClick={() => this.onSelectSymbol(result.symbol)}>
+                <strong>{result.symbol}</strong> - {result.name}
+              </li>
+            ))}
+          </ul>
+        )}
+        {this.loading && <uc-spinner />}
       </Fragment>
     );
   }

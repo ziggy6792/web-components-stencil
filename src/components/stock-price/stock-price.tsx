@@ -1,4 +1,4 @@
-import { Component, h, Prop, State, Watch, Listen } from '@stencil/core';
+import { Component, h, Prop, State, Watch, Listen, Fragment } from '@stencil/core';
 import { AV_API_KEY } from '../../global/global';
 
 @Component({
@@ -14,6 +14,8 @@ export class StockPrice {
   @State() stockInputValid = false;
 
   @State() error: string = null;
+
+  @State() loading = false;
 
   stockInput: HTMLInputElement;
 
@@ -42,6 +44,7 @@ export class StockPrice {
   }
 
   fetchStockPrice(stockSymbol: string) {
+    this.loading = true;
     fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KEY}`)
       .then((res) => {
         return res.json();
@@ -53,11 +56,17 @@ export class StockPrice {
         }
         this.fetchedPrice = +recPrice;
         this.error = null;
+        this.loading = false;
       })
       .catch((err) => {
         console.log(err);
         this.error = err.message;
+        this.loading = false;
       });
+  }
+
+  hostData() {
+    return { class: this.error ? 'error' : '' };
   }
 
   componentDidLoad() {
@@ -82,14 +91,19 @@ export class StockPrice {
             this.stockInputValid = this.sockUserInput.trim()?.length > 0;
           }}
         />
-        <button type='submit' disabled={!this.stockInputValid}>
+        <button type='submit' disabled={!this.stockInputValid || this.loading}>
           Fetch
         </button>
       </form>,
       <div>
-        {this.error && <div>{this.error}</div>}
-        {!this.error && this.fetchedPrice && <p>Price: ${this.fetchedPrice}</p>}
-        {!this.error && !this.fetchedPrice && <p>Please enter ticker</p>}
+        {!this.loading && (
+          <Fragment>
+            {this.error && <div>{this.error}</div>}
+            {!this.error && this.fetchedPrice && <p>Price: ${this.fetchedPrice}</p>}
+            {!this.error && !this.fetchedPrice && <p>Please enter ticker</p>}
+          </Fragment>
+        )}
+        {this.loading && <uc-spinner />}
       </div>,
     ];
   }
