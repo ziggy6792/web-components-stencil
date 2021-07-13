@@ -39,7 +39,12 @@
     })
 
   </script>
-  --> <uc-stock-price></uc-stock-price> <script>
+  --> <uc-stock-price stock-symbol="TIGR"></uc-stock-price> <uc-stock-finder></uc-stock-finder> <script>
+    const stockFinderEl = document.querySelector('uc-stock-finder')
+    stockFinderEl.addEventListener('ucSymbolSelected', (e) => {
+      console.log(e)
+    })
+  </script> <script>
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   // auto-unregister service worker during dev mode
   navigator.serviceWorker.getRegistration().then(function(registration) {

@@ -57,7 +57,14 @@
 
   </script>
   -->
-  <uc-stock-price></uc-stock-price>
+  <uc-stock-price stock-symbol='TIGR'></uc-stock-price>
+  <uc-stock-finder></uc-stock-finder>
+  <script>
+    const stockFinderEl = document.querySelector('uc-stock-finder')
+    stockFinderEl.addEventListener('ucSymbolSelected', (e) => {
+      console.log(e)
+    })
+  </script>
 
 </body>
 

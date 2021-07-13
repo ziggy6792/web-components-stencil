@@ -1,4 +1,4 @@
-import { Component, h, State } from '@stencil/core';
+import { Component, h, Prop, State, Watch, Listen } from '@stencil/core';
 import { AV_API_KEY } from '../../global/global';
 
 @Component({
@@ -17,9 +17,31 @@ export class StockPrice {
 
   stockInput: HTMLInputElement;
 
+  @Prop({ reflect: true, mutable: true }) stockSymbol: string;
+
+  @Watch('stockSymbol')
+  stockSymnolChanged(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      this.fetchStockPrice(newValue);
+      this.sockUserInput = newValue;
+    }
+  }
+
   onFetchStockPrice(event: Event) {
     event.preventDefault();
-    const stockSymbol = this.stockInput.value;
+    this.stockSymbol = this.stockInput.value;
+  }
+
+  @Listen('ucSymbolSelected', { target: 'body' })
+  onStockSymbolSelect(event: CustomEvent) {
+    console.log('stock symbol selected', event.detail);
+    if (event.detail && event.detail !== this.stockSymbol) {
+      this.stockSymbol = event.detail;
+      this.stockInputValid = true;
+    }
+  }
+
+  fetchStockPrice(stockSymbol: string) {
     fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KEY}`)
       .then((res) => {
         return res.json();
@@ -37,6 +59,16 @@ export class StockPrice {
         this.error = err.message;
       });
   }
+
+  componentDidLoad() {
+    if (this.stockSymbol) {
+      this.fetchStockPrice(this.stockSymbol);
+      this.sockUserInput = this.stockSymbol;
+      this.stockInputValid = true;
+    }
+  }
+
+  componentDidUpdate() {}
 
   render() {
     return [
