@@ -1,4 +1,4 @@
-import { Component, Prop, h, Method, Fragment, State } from '@stencil/core';
+import { Component, Prop, h, Fragment, State } from '@stencil/core';
 
 @Component({
   tag: 'uc-tooltip',
